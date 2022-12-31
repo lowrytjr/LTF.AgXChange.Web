@@ -14,13 +14,14 @@ import { AccountService } from './services/account/account.service';
 import { AuthenticateService } from './services/authenticate/authenticate.service';
 import { HttpService } from './services/http/http.service';
 import { AppSettingsService} from './services/appSettings/app-settings.service';
-import { VerifyAccountComponent } from './pages/verify-email/verify-account.component';
+import { VerifyAccountComponent } from './pages/verify-account/verify-account.component';
+import { CreateAccountComponent } from './pages/create-account/create-account.component';
 
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'verify-email', component: VerifyAccountComponent },
+  { path: 'verify-account', component: VerifyAccountComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -32,7 +33,8 @@ const appRoutes: Routes = [
     FooterComponent,
     HomeComponent,
     PageNotFoundComponent,
-    VerifyAccountComponent
+    VerifyAccountComponent,
+    CreateAccountComponent
   ],
   imports: [
     BrowserModule,
