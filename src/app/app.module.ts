@@ -16,12 +16,16 @@ import { HttpService } from './services/http/http.service';
 import { AppSettingsService} from './services/appSettings/app-settings.service';
 import { VerifyAccountComponent } from './pages/verify-account/verify-account.component';
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
-
+import { ErrorComponent } from './pages/error/error.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'verify-account', component: VerifyAccountComponent },
+  { path: 'create-account', component: CreateAccountComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'error', component: ErrorComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -34,7 +38,9 @@ const appRoutes: Routes = [
     HomeComponent,
     PageNotFoundComponent,
     VerifyAccountComponent,
-    CreateAccountComponent
+    CreateAccountComponent,
+    ErrorComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

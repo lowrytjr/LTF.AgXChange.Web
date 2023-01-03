@@ -1,5 +1,10 @@
 export enum LoginState {
-    init, 
-    emailSubmit, 
-    passwordSubmit
-  }
+  init, 
+  emailSubmit
+}
+
+export enum AccountState {
+  init, 
+  emailSubmit, 
+  passwordSubmit
+}

@@ -22,7 +22,7 @@ export class HttpService {
         let response = <ApiResponse>data;
         
       }),
-      retry(1),
+      //retry(1),
       catchError(
         this.handleError<T>(operation)
       )
@@ -61,20 +61,15 @@ export class HttpService {
   private handleError<T>(operation = 'operation') {
     return (error: any): Observable<T> => {
 
-      let result = new ApiResponse
+      let result = new ApiResponse();
 
       try {
-        if (error.error instanceof ErrorEvent) {
-          result.statusCode = error.error.status
-          result.message = `Error: ${error.error.message}`;
-        } else {
-          result.statusCode = error.status
-          result.message = `Error: ${error.message}`;
-        }
+          result.statusCode = error.error.statusCode;
+          result.message = error.error.message;
       }
       catch(e) {
-        result.statusCode = 400
-        result.message = "Unknown error"
+        result.statusCode = 500
+        result.message = "unknown_error"
       }
 
       // Let the app keep running by returning an empty result.

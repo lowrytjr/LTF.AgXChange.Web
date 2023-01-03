@@ -1,25 +1,24 @@
 <div class="login-page">
-    <div class="signup-box">
-        <div class="signup-text">
-            <p>New to AgXChange?</p>
-            <p>Become a member by selecting "Join AgXChange".</p>
-            <p>It's easy and only takes a few minutes.</p>
-            <button class="signup-button" type="submit">Join AgXChange</button>
-        </div>
-    </div>
+    
     <div class="login-box">
         <div class="login-header">Log On</div>
         <form [formGroup]="_loginForm" (ngSubmit)="SubmitLogon()">
             <div class="login-id-container">
-                <div>Email Address</div>
-                <input id="userID" type="text" class="login-input-field" formControlName="userID">
+                <div class="login-id-label-container">
+                    <div class="login-id-label">Email Address</div><div class="loading" [hidden]="!_showEmailLoader"><img src="/assets/loading.gif"></div>
+                </div>
+                <input id="userID" type="text" class="login-input-field" formControlName="userID" email="true">
+                <div class="login-error" [hidden]="!_showEmailError">Email address is not valid.</div> 
             </div>
             <div class="login-password-container" [hidden]="!_showPassword">
-                <div>Password</div>
+                <div class="login-password-label-container">
+                    <div class="login-password-label">Password</div><div class="loading" [hidden]="!_showPasswordLoader"><img src="/assets/loading.gif"></div>
+                </div>
                 <input id="password" type="text" class="login-input-field" formControlName="password">
             </div>
-            <button class="login-button" type="submit">Next</button>
+            <button class="login-button" type="submit">{{_loginButtonText}}</button>
         </form>
-        <div class="login-footer"><a href="#">I need help logging on</a></div>
+        <div class="login-footer"><a routerLink="/forgot-password" routerLinkActive="active" ariaCurrentWhenActive="page">I forgot my password</a></div>
+        <div class="login-register">Not a user? <a routerLink="/create-account" routerLinkActive="active" ariaCurrentWhenActive="page">Register.</a></div>
     </div>
 </div>

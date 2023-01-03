@@ -1,1 +1,33 @@
-<p>create-account works!</p>
+<div class="create-account-page">
+    <div class="signup-box">
+        <div class="signup-text">
+            <p>New to AgXChange?</p>
+            <p>Become a member by selecting "Join AgXChange".</p>
+            <p>It's easy and only takes a few minutes.</p>
+            <button class="signup-button" type="submit">Join AgXChange</button>
+        </div>
+    </div>
+    <div class="signup-box">
+        <div class="login-header">Log On</div>
+        <form [formGroup]="_createAccountForm">
+            <div class="login-id-container">
+                <div>Email Address</div>
+                <input id="userID" type="text" class="login-input-field" formControlName="userID">
+            </div>
+            <div class="login-password-container">
+                <div>Screen Name</div>
+                <input id="screenName" type="text" class="login-input-field" formControlName="screenName">
+            </div>
+            <div class="login-password-container">
+                <div>Password</div>
+                <input id="password" type="text" class="login-input-field" formControlName="password">
+            </div>
+            <div class="login-password-container">
+                <div>Password</div>
+                <input id="verifyPassword" type="text" class="login-input-field" formControlName="verifyPassword">
+            </div>
+            <button class="login-button" type="submit">Next</button>
+        </form>
+        <div class="login-footer"><a href="#">I need help logging on</a></div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+.error-page {
+    display: inline-flex;
+    flex-wrap: wrap-reverse;
+    width: 100%;
+    justify-content: center;
+    padding: 100px 100px 100px 100px;
+}
+.message-box {
+    font-size: 16pt;
+    border: 1px solid;
+    border-radius: 2px;
+    margin: 0px;
+    padding: 60px;
+    background-color: white;
+}
