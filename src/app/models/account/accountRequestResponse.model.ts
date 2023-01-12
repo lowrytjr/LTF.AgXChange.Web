@@ -1,8 +1,7 @@
 import { ApiResponse } from "../common/apiResponse.model";
 
-export class EmailResponse extends ApiResponse {
+export class AccountRequestResponse extends ApiResponse {
+    accountRequestToken: string | undefined;
     host: string | undefined;
     referer: string | undefined;
-    emailToken: string | undefined;
-    emailMessage: string | undefined;
 }

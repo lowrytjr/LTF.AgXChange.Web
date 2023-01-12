@@ -1,18 +1,29 @@
 .create-account-page {
     display: inline-flex;
-    flex-direction: column;
+    flex-wrap: wrap-reverse;
     width: 100%;
     justify-content: center;
-    padding: 60px 80px 60px 60px;
+    padding: 80px 100px 80px 100px;
 }
-.signup-box {
-    display: inline-flex;
-    justify-content: center;
-    align-content: center;
-}
-.signup-text {
-    margin: 0px;
-    padding: 20px;
+.create-account-box {
     border: 1px solid;
-    border-radius: 2px;
+    border-radius: 4px;
+    margin: 0px;
+    padding: 20px 20px 10px 20px;
+    background-color: white;
+    width: 40%;
+    min-width: 300px;
+    max-width: 400px;
+}
+.create-account-header {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 20px;
+    font-size: 18pt;
+}
+.create-account-footer {
+    width: 100%;
+    text-align: center;
+    font-size: 10pt;
+    font-style: italic;
 }

@@ -3,8 +3,9 @@ export enum LoginState {
   emailSubmit
 }
 
-export enum AccountState {
-  init, 
-  emailSubmit, 
-  passwordSubmit
+export enum CreateAccountState {
+  collectUserInformation, 
+  submitUserInformation,
+  collectPasswordInformation, 
+  submitPasswordInformation
 }

@@ -10,7 +10,7 @@ import { AppSettingsService } from 'src/app/services/appSettings/app-settings.se
 })
 export class ErrorComponent {
   _errorState: ErrorState;
-  _message: string = "An unexpected error occured.";
+  _message: string;
 
   /** ============================================================ */
   /** Constructor */
@@ -21,11 +21,11 @@ export class ErrorComponent {
         this._errorState = this.router.getCurrentNavigation()?.extras?.state as ErrorState;
       }
       else {
-        this._errorState = new ErrorState("unknown", 500, "An unexpected error occured.");
+        this._errorState = new ErrorState("unknown", 500, "unexpected_error");
       }
     }
     catch(err) {
-      this._errorState = new ErrorState("unknown", 500, "An unexpected error occured.");
+      this._errorState = new ErrorState("unknown", 500, "unexpected_error");
     }
 
     // Map the error message
@@ -46,11 +46,11 @@ export class ErrorComponent {
         return errorCode?.message!;
       }
       else {
-        return "An unexpected error occured.";
+        return "unexpected_error";
       }
     }
     catch(err) {
-      return "An unknown error occurred"
+      return "unexpected_error"
     }
   }
 }

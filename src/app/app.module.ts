@@ -18,6 +18,7 @@ import { VerifyAccountComponent } from './pages/verify-account/verify-account.co
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -40,7 +41,8 @@ const appRoutes: Routes = [
     VerifyAccountComponent,
     CreateAccountComponent,
     ErrorComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

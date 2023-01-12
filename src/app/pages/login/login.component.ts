@@ -2,11 +2,14 @@ import { Component, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginState } from "../../constants/enums";
 import { AuthenticateService } from '../../services/authenticate/authenticate.service';
-import { EmailRequest } from '../../models/account/emailRequest.model'
+import { AuthenticateRequestRequest } from '../../models/account/authenticateRequestRequest.model'
 import { AuthenticateRequest } from '../../models/account/authenticateRequest.model';
 import { Router } from '@angular/router';
 import { ErrorState } from 'src/app/models/common/errorState.model';
+import { AppSettingsService } from 'src/app/services/appSettings/app-settings.service';
 
+/** ============================================================ */
+/** Login Component */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,36 +20,50 @@ export class LoginComponent {
   private _formBuilder: FormBuilder;
   private _authenticateService: AuthenticateService;
   private _emailToken: string;
-  private _emailPattern: string;
+  private _appSettings: AppSettingsService;
+  private _renderer: Renderer2;
+  private _router: Router
 
   _loginForm: FormGroup;
   _loginState: LoginState = LoginState.init;
-  _loginButtonText: string = "Next";
+  _emailErrorText: string = ""
+  _passwordErrorText: string = ""
+  _loginButtonText: string = "";
   _showPassword: boolean = false;
   _showEmailError: boolean = false;
+  _showPasswordError: boolean = false;
   _showEmailLoader: boolean = false;
   _showPasswordLoader: boolean = false;
   
   /** ============================================================ */
   /** Constructor */
-  constructor(formBuilder: FormBuilder, authenticateService: AuthenticateService, private renderer: Renderer2, private router: Router) {
-    this._formBuilder = formBuilder;
-    this._authenticateService = authenticateService;
-    this._emailToken = "";
-    this._emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+  constructor(
+    formBuilder: FormBuilder, 
+    authenticateService: AuthenticateService, 
+    renderer: Renderer2, 
+    router: Router, 
+    appSettings: AppSettingsService) {
+      // Initialize properties
+      this._formBuilder = formBuilder;
+      this._authenticateService = authenticateService;
+      this._appSettings = appSettings;
+      this._router = router;
+      this._renderer = renderer;
+      this._loginButtonText = "Next";
+      this._emailToken = "";
     
-    // Build the form
-    this._loginForm = this._formBuilder.group({
-      userID: ['', [Validators.required, Validators.pattern(this._emailPattern)]],
-      password: ''
-    });
+      // Build the form
+      this._loginForm = this._formBuilder.group({
+        userID: ['', [Validators.required, Validators.pattern(this._appSettings.emailValidationPattern)]],
+        password: ['', [Validators.required]]
+      });
   }
 
   /** ============================================================ */
   /**  ngAfterViewInit */
   ngAfterViewInit() {
     // Set focus to the user id
-    this.renderer.selectRootElement('#userID').focus();
+    this._renderer.selectRootElement('#userID').focus();
   }
 
   /** ============================================================ */
@@ -56,40 +73,44 @@ export class LoginComponent {
     switch(this._loginState) {
       case LoginState.init:
         // Make sure the email is valid
-        if (this._loginForm.get('userID')?.errors?.['pattern']) {
-          // Show the invalid email error message
+        if (this._loginForm.get('userID')?.errors?.['required']) {
+          this._emailErrorText = "Email address is required";
+          this._showEmailError = true;
+          return;
+        }
+        else if (this._loginForm.get('userID')?.errors?.['pattern']) {
+          this._emailErrorText = "Email address is invalid";
           this._showEmailError = true;
           return;
         }
         else {
-          // Hide the email error message and show the loader
+          // Hide the email error message, disable the email box and show the loader
           this._showEmailError = false;
           this._showEmailLoader = true;
+          this._loginForm.controls['userID'].disable();
 
           // Get the email address from the form
-          let emailRequest = new EmailRequest(this._loginForm.value.userID!);
+          let authenticateRequestRequest = new AuthenticateRequestRequest(this._loginForm.value.userID!);
 
-          // Call the account service
-          this._authenticateService.authenticateEmailAddress(emailRequest).subscribe(
-            emailResponse => {
-              if (emailResponse.statusCode == 200) {
-                // Show the password box and disable email
-                this._emailToken = emailResponse.emailToken!;
+          // Call the authenticate service
+          this._authenticateService.authenticateRequest(authenticateRequestRequest).subscribe(
+            authenticateRequestResponse => {
+              if (authenticateRequestResponse.statusCode == 200) {
+                // Get the email token and show the password box
+                this._emailToken = authenticateRequestResponse.emailToken!;
                 this._showPassword = true;
                 this._loginState = LoginState.emailSubmit;
-                this._loginForm.controls['userID'].disable();
                 
                 // Update button and hide loader
                 setTimeout(() => {
                   this._loginButtonText = "Submit";
                   this._showEmailLoader = false;
-                  this.renderer.selectRootElement('#password').focus();
+                  this._renderer.selectRootElement('#password').focus();
               }, 150);
               }
               else {
                 // Show error screen
-                this.router.navigateByUrl('/error', { state: new ErrorState("login", emailResponse.statusCode, emailResponse.message) });
-                //{ page:"login", statusCode:emailResponse.statusCode , message:emailResponse.statusCode }
+                this._router.navigateByUrl('/error', { state: new ErrorState("login", authenticateRequestResponse.statusCode, authenticateRequestResponse.message) });
               }
             }
           );
@@ -97,15 +118,31 @@ export class LoginComponent {
         break;
 
       case LoginState.emailSubmit:
+        // Make sure a password was provided
+        if (this._loginForm.get('password')?.errors?.['required']) {
+          // Show the invalid password error message
+          this._passwordErrorText = "Password is required.";
+          this._showPasswordError = true;
+          return;
+        }
+
+        // Hide the password error, disable the password box and show the loader
+        this._showPasswordError = false;
+        this._showPasswordLoader = true;
+        this._loginForm.controls['password'].disable();
+
         // Get the password from the form
         let authenticateRequest = new AuthenticateRequest(this._loginForm.value.password!, this._emailToken!);
         
-        // Call the account service
-        this._authenticateService.authenticatePassword(authenticateRequest).subscribe(
+        // Call the authenticate service
+        this._authenticateService.authenticate(authenticateRequest).subscribe(
           authenticateResponse => {
+            // Hide the loader
+            this._showPasswordLoader = false;
+
             if (authenticateResponse.statusCode == 200) {
               // Show the home screen
-              this.router.navigateByUrl('/');
+              this._router.navigateByUrl('/');
             }
             else {
               switch(authenticateResponse.statusCode) {
@@ -116,7 +153,7 @@ export class LoginComponent {
 
                 default:
                   // Show error screen
-                  this.router.navigateByUrl('/error', { state: { statusCode:authenticateResponse.statusCode , message:authenticateResponse.message } });
+                  this._router.navigateByUrl('/error', { state: { statusCode:authenticateResponse.statusCode , message:authenticateResponse.message } });
                   break;
               }
             }

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthenticateService } from 'src/app/services/authenticate/authenticate.service';
 
+/** ============================================================ */
+/** Home Component */
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

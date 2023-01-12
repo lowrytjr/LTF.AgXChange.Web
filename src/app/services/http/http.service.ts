@@ -69,7 +69,7 @@ export class HttpService {
       }
       catch(e) {
         result.statusCode = 500
-        result.message = "unknown_error"
+        result.message = "unexpected_error"
       }
 
       // Let the app keep running by returning an empty result.

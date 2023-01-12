@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { EmailRequest } from '../../models/account/emailRequest.model'
-import { EmailResponse } from '../../models/account/emailResponse.model'
+import { AuthenticateRequestRequest } from '../../models/account/authenticateRequestRequest.model'
+import { AuthenticateRequestResponse } from '../../models/account/authenticateRequestResponse.model'
 import { AuthenticateRequest } from '../../models/account/authenticateRequest.model'
 import {AuthenticateResponse } from '../../models/account/authenticateResponse.model'
 import { map, Observable, tap } from 'rxjs';
@@ -23,14 +23,14 @@ export class AuthenticateService {
 
   /** ============================================================ */
   /** POST: Get Email Token */
-  authenticateEmailAddress(emailRequest: EmailRequest): Observable<EmailResponse> {
-    return this.http.Post<EmailResponse>(emailRequest, "authenticate/username");
+  authenticateRequest(authenticateRequestRequest: AuthenticateRequestRequest): Observable<AuthenticateRequestResponse> {
+    return this.http.Post<AuthenticateRequestResponse>(authenticateRequestRequest, "authenticate/request");
   }
 
   /** ============================================================ */
   /** POST: Authenticate Password */
-  authenticatePassword(authenticateRequest: AuthenticateRequest): Observable<AuthenticateResponse> {
-    return this.http.Post<AuthenticateResponse>(authenticateRequest, "authenticate/password").pipe(
+  authenticate(authenticateRequest: AuthenticateRequest): Observable<AuthenticateResponse> {
+    return this.http.Post<AuthenticateResponse>(authenticateRequest, "authenticate/login").pipe(
       tap(data => {
         if (data.jwt)
         {

@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { AccountVerifyRequest } from 'src/app/models/account/accountVerifyRequest.model';
 import { AccountService } from '../../services/account/account.service';
 
+/** ============================================================ */
+/** VerifyAccount Component */
 @Component({
   selector: 'app-verify-account',
   templateUrl: './verify-account.component.html',
@@ -11,16 +13,22 @@ import { AccountService } from '../../services/account/account.service';
 
 export class VerifyAccountComponent {
   private _accountService: AccountService;
+  private _route: ActivatedRoute
   private emailVerifyToken: string = "";
   _message = "";
 
-  constructor(private route: ActivatedRoute, accountService: AccountService) { 
+  /** ============================================================ */
+  /** Constructor */
+  constructor(route: ActivatedRoute, accountService: AccountService) { 
     this._accountService = accountService;
+    this._route = route;
   }
 
+  /** ============================================================ */
+  /**  ngOnInit */
   ngOnInit() {
     // Get the verification token
-    this.route.queryParams
+    this._route.queryParams
       .subscribe(params => {
         this.emailVerifyToken = params["t"];
       }
