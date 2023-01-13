@@ -27,35 +27,36 @@ ul{
 input:focus, textarea:focus, select:focus{
     outline: none;
 }
-.account-input-container {
+.input-container {
     border: 1px solid;
     border-radius: 4px;
     margin: 3px 0px 3px 0px;
     padding: 10px;
 }
-.account-input-container-disabled {
+.input-container-disabled {
     background-color: #FFF8DC;
 }
-.account-input-label-container {
+.input-label-container {
     display: inline-flex;
     flex-wrap: nowrap;
     width: 100%;
 }
-.account-input-label {
+.input-label {
     width: 100%;
 }
-.account-input-field {
+.input-field {
     border: none;
     width: 100%;
     line-height: 18pt;
     font-size: 14pt;
 }
-.account-input-field-disabled {
+.input-field-disabled {
     background-color: #FFF8DC;
 }
 .account-error {
     color: red;
     font-style: italic;
+    font-size: 10pt;
 }
 .account-button {
     width: 100%;
@@ -101,3 +102,47 @@ input:focus, textarea:focus, select:focus{
     box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
     transform: translateY(0);
 }
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  .tooltip:after{
+    content: "?";
+    display: block;
+    background: #E49B0F;
+    color: #fff;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    line-height: 12px;
+    text-align: center;
+    font-size: 10px;
+    font-family: Verdana;
+  }
+  /* Tooltip text */
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 250px;
+    background-color: #FFF8DC;
+    color: #000000;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid black;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+  }
+  .tooltiptext ul {
+    list-style: circle;
+    display: list-item;
+    margin: 20px;
+  }
+  .tooltiptext ul li {
+    display: list-item;
+  }
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }

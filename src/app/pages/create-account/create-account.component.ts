@@ -37,6 +37,7 @@ export class CreateAccountComponent {
   _showVerifyPasswordError: boolean = false;
   _showLoadingOverlay: boolean = false;
   _disableUserInputs: boolean = false;
+  _passwordIsValid: boolean = false;
 
   /** ============================================================ */
   /** Constructor */
@@ -58,7 +59,7 @@ export class CreateAccountComponent {
       this._createAccountForm = this._formBuilder.group({
         userID: ['', [Validators.required, Validators.pattern(this._appSettings.emailValidationPattern)]],
         screenName: ['', [Validators.required]],
-        password: ['', [Validators.required]],
+        password: ['', [Validators.required, Validators.pattern(this._appSettings.passwordValidationPattern)]],
         verifyPassword: ['', [Validators.required]],
       });
   }
@@ -68,6 +69,7 @@ export class CreateAccountComponent {
   ngAfterViewInit() {
     // Set the form state
     this.SetFormState(CreateAccountState.collectUserInformation, false, false, false, false);
+    this._createAccountState = CreateAccountState.collectUserInformation;
   }
 
   /** ============================================================ */
@@ -77,11 +79,11 @@ export class CreateAccountComponent {
     switch(this._createAccountState) {
       // Submit email and screen name
       case CreateAccountState.collectUserInformation:
-      // Get the email address and screen name from the form
-      let accountRequestRequest = new AccountRequestRequest(this._createAccountForm.value.userID!, this._createAccountForm.value.screenName!);
+        // Reset form state
+        this.SetFormState(CreateAccountState.collectUserInformation, false, false, false, false);
 
-      // Set the form state
-      this.SetFormState(CreateAccountState.submitUserInformation, false, false, false, false);
+        // Get the email address and screen name from the form
+        let accountRequestRequest = new AccountRequestRequest(this._createAccountForm.value.userID!, this._createAccountForm.value.screenName!);
 
         // Make sure email and screen name are valid before submitting
         if (this._createAccountForm.get('userID')?.errors?.['required']) {
@@ -92,7 +94,7 @@ export class CreateAccountComponent {
           this._emailErrorText = "Email address is invalid";
           this._showEmailError = true;
         }
-        if (this._createAccountForm.get('screenName')?.errors?.['required']){
+        if (this._createAccountForm.get('screenName')?.errors?.['required']) {
           this._screenNameErrorText = "Screen name is required.";
           this._showScreenNameError = true;
         }
@@ -102,6 +104,9 @@ export class CreateAccountComponent {
           this.SetFormState(CreateAccountState.collectUserInformation, this._showEmailError, this._showScreenNameError, false, false);
           return;
         }
+        
+        // Set the form state
+        this.SetFormState(CreateAccountState.submitUserInformation, false, false, false, false);
 
         // Call the account service
         this._accountService.requestAccount(accountRequestRequest).subscribe(
@@ -138,25 +143,23 @@ export class CreateAccountComponent {
 
       // Submit Passwords
       case CreateAccountState.collectPasswordInformation:
+        // Reset the form state
+        this.SetFormState(CreateAccountState.collectPasswordInformation, false, false, false, false);
+
         // Get the passwords from the form
         let accountCreateRequest = new AccountCreateRequest(this._accountRequestToken, this._createAccountForm.value.password!, this._createAccountForm.value.verifyPassword!);
         
-        // Set the form state
-        this.SetFormState(CreateAccountState.submitPasswordInformation, false, false, false, false);
-
         // Make sure passwords are valid before submitting
         if (this._createAccountForm.get('password')?.errors?.['required']) {
           this._passwordErrorText = "Password is required.";
           this._showPasswordError = true;
         }
-        if (this._createAccountForm.get('verifyPassword')?.errors?.['pattern']) {
-          this._verifyPasswordErrorText = "Password is required.";
-          this._showVerifyPasswordError = true;
-        }
-        if (this._createAccountForm.value.password != this._createAccountForm.value.verifyPassword){
-          this._verifyPasswordErrorText = "Passwords must match.";
-          this._passwordErrorText = "Passwords must match.";
+        else if (this._createAccountForm.get('password')?.errors?.['pattern']) {
+          this._passwordErrorText = "Password is invalid.";
           this._showPasswordError = true;
+        }
+        else if (this._createAccountForm.value.password != this._createAccountForm.value.verifyPassword){
+          this._verifyPasswordErrorText = "Passwords must match.";
           this._showVerifyPasswordError = true;
         }
 
@@ -165,6 +168,9 @@ export class CreateAccountComponent {
           this.SetFormState(CreateAccountState.collectPasswordInformation, false, false, this._showPasswordError, this._showVerifyPasswordError);
           return;
         }
+
+        // Set the form state
+        this.SetFormState(CreateAccountState.submitPasswordInformation, false, false, false, false);
 
         // Call the account service
         this._accountService.createAccount(accountCreateRequest).subscribe(

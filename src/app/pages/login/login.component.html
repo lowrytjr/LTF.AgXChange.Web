@@ -2,18 +2,18 @@
     <div class="login-box">
         <div class="login-header">Log On</div>
         <form [formGroup]="_loginForm" (ngSubmit)="SubmitLogon()">
-            <div class="account-input-container">
-                <div class="account-input-label-container">
-                    <div class="account-input-label">Email Address</div><div class="loading" [hidden]="!_showEmailLoader"><img src="/assets/loading.gif"></div>
+            <div class="input-container">
+                <div class="input-label-container">
+                    <div class="input-label">Email Address</div><div class="loading" [hidden]="!_showEmailLoader"><img src="/assets/loading.gif"></div>
                 </div>
-                <input id="userID" type="text" class="account-input-field" formControlName="userID" email="true">
+                <input id="userID" type="text" class="input-field" formControlName="userID" email="true">
                 <div class="account-error" [hidden]="!_showEmailError">{{_emailErrorText}}</div> 
             </div>
-            <div class="account-input-container" [hidden]="!_showPassword">
-                <div class="account-input-label-container">
-                    <div class="account-input-label">Password</div><div class="loading" [hidden]="!_showPasswordLoader"><img src="/assets/loading.gif"></div>
+            <div class="input-container" [hidden]="!_showPassword">
+                <div class="input-label-container">
+                    <div class="input-label">Password</div><div class="loading" [hidden]="!_showPasswordLoader"><img src="/assets/loading.gif"></div>
                 </div>
-                <input id="password" type="text" class="account-input-field" formControlName="password">
+                <input id="password" type="text" class="input-field" formControlName="password">
                 <div class="account-error" [hidden]="!_showPasswordError">{{_passwordErrorText}}</div>
             </div>
             <button class="account-button" type="submit">{{_loginButtonText}}</button>
