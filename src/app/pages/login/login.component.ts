@@ -7,6 +7,7 @@ import { AuthenticateRequest } from '../../models/account/authenticateRequest.mo
 import { Router } from '@angular/router';
 import { ErrorState } from 'src/app/models/common/errorState.model';
 import { AppSettingsService } from 'src/app/services/appSettings/app-settings.service';
+import { RegistrationState } from 'src/app/models/common/registrationState';
 
 /** ============================================================ */
 /** Login Component */
@@ -24,6 +25,7 @@ export class LoginComponent {
   private _renderer: Renderer2;
   private _router: Router
 
+  _registrationState: RegistrationState;
   _loginForm: FormGroup;
   _loginState: LoginState = LoginState.init;
   _emailErrorText: string = ""
@@ -32,8 +34,7 @@ export class LoginComponent {
   _showPassword: boolean = false;
   _showEmailError: boolean = false;
   _showPasswordError: boolean = false;
-  _showEmailLoader: boolean = false;
-  _showPasswordLoader: boolean = false;
+  _showLoadingOverlay: boolean = false;
   
   /** ============================================================ */
   /** Constructor */
@@ -51,10 +52,13 @@ export class LoginComponent {
       this._renderer = renderer;
       this._loginButtonText = "Next";
       this._emailToken = "";
-    
+      
+      // Get Registration State
+      this._registrationState = this.GetRegistrationState();
+
       // Build the form
       this._loginForm = this._formBuilder.group({
-        userID: ['', [Validators.required, Validators.pattern(this._appSettings.emailValidationPattern)]],
+        userID: [this._registrationState.emailAddress, [Validators.required, Validators.pattern(this._appSettings.emailValidationPattern)]],
         password: ['', [Validators.required]]
       });
   }
@@ -86,7 +90,7 @@ export class LoginComponent {
         else {
           // Hide the email error message, disable the email box and show the loader
           this._showEmailError = false;
-          this._showEmailLoader = true;
+          this._showLoadingOverlay = true;
           this._loginForm.controls['userID'].disable();
 
           // Get the email address from the form
@@ -104,7 +108,7 @@ export class LoginComponent {
                 // Update button and hide loader
                 setTimeout(() => {
                   this._loginButtonText = "Submit";
-                  this._showEmailLoader = false;
+                  this._showLoadingOverlay = false;
                   this._renderer.selectRootElement('#password').focus();
               }, 150);
               }
@@ -128,7 +132,7 @@ export class LoginComponent {
 
         // Hide the password error, disable the password box and show the loader
         this._showPasswordError = false;
-        this._showPasswordLoader = true;
+        this._showLoadingOverlay = true;
         this._loginForm.controls['password'].disable();
 
         // Get the password from the form
@@ -138,7 +142,7 @@ export class LoginComponent {
         this._authenticateService.authenticate(authenticateRequest).subscribe(
           authenticateResponse => {
             // Hide the loader
-            this._showPasswordLoader = false;
+            this._showLoadingOverlay = false;
 
             if (authenticateResponse.statusCode == 200) {
               // Show the home screen
@@ -161,5 +165,24 @@ export class LoginComponent {
         );
         break;
     }
+  }
+
+  GetRegistrationState(): RegistrationState {
+    var registrationState;
+
+    try {
+      // Get the passed in registration state state
+      if (this._router.getCurrentNavigation()?.extras?.state) {
+        registrationState = this._router.getCurrentNavigation()?.extras?.state as RegistrationState;
+      }
+      else {
+        registrationState = new RegistrationState(true, "test@test.com", "WildMongrel");
+      }
+    }
+    catch(err) {
+      registrationState = new RegistrationState(false, "", "");
+    }
+
+    return registrationState;
   }
 }

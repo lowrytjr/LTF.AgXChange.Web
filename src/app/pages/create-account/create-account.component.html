@@ -8,21 +8,21 @@
                     <div class="input-label">Email Address</div>
                 </div>
                 <input id="userID" type="text" [ngClass]="{'input-field': true, 'input-field-disabled': _disableUserInputs}" formControlName="userID" email="true">
-                <div class="account-error" [hidden]="!_showEmailError">{{_emailErrorText}}</div> 
+                <div class="input-error" [hidden]="!_showEmailError">{{_emailErrorText}}</div> 
             </div>
             <div [ngClass]="{'input-container': true, 'input-container-disabled': _disableUserInputs}">
                 <div class="input-label-container">
                     <div class="input-label">Screen Name</div>
                 </div>
                 <input id="screenName" type="text" [ngClass]="{'input-field': true, 'input-field-disabled': _disableUserInputs}" formControlName="screenName">
-                <div class="account-error" [hidden]="!_showScreenNameError">{{_screenNameErrorText}}</div> 
+                <div class="input-error" [hidden]="!_showScreenNameError">{{_screenNameErrorText}}</div> 
             </div>
             <div class="input-container" [hidden]="!_showPassword">
                 <div class="input-label-container">
                     <div class="input-label">Password</div>
                 </div>
                 <input id="password" type="password" class="input-field" formControlName="password">
-                <div class="account-error" [hidden]="!_showPasswordError">{{_passwordErrorText}}
+                <div class="input-error" [hidden]="!_showPasswordError">{{_passwordErrorText}}
                     <div class="tooltip">
                         <span class="tooltiptext">Passwords must be at least 8 characters long and consist of at least:
                             <ul>
@@ -35,13 +35,12 @@
                     </div>
                 </div> 
             </div>
-
             <div class="input-container" [hidden]="!_showPassword">
                 <div class="input-label-container">
                     <div class="input-label">Verify Password</div>
                 </div>
                 <input id="verifyPassword" type="password" class="input-field" formControlName="verifyPassword">
-                <div class="account-error" [hidden]="!_showVerifyPasswordError">{{_verifyPasswordErrorText}}</div> 
+                <div class="input-error" [hidden]="!_showVerifyPasswordError">{{_verifyPasswordErrorText}}</div> 
             </div>
             <button class="account-button" type="submit">{{_loginButtonText}}</button>
         </form>

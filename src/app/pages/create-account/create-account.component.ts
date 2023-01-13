@@ -7,6 +7,7 @@ import { AccountRequestRequest } from 'src/app/models/account/accountRequestRequ
 import { AccountCreateRequest } from 'src/app/models/account/accountCreateRequest.model';
 import { ErrorState } from 'src/app/models/common/errorState.model';
 import { Router } from '@angular/router';
+import { RegistrationState } from 'src/app/models/common/registrationState';
 
 /** ============================================================ */
 /** CreateAccount Component */
@@ -177,7 +178,7 @@ export class CreateAccountComponent {
           accountCreateResponse => {
             if (accountCreateResponse.statusCode == 200) {
               // Redirect to the login page
-              this._router.navigateByUrl('/login');
+              this._router.navigateByUrl('/login', { state: new RegistrationState(true, accountCreateResponse.emailAddress!, accountCreateResponse.screenName!) });
             }
             else {
               if (accountCreateResponse.statusCode == 400 && accountCreateResponse.message == "screen_name_exists") {

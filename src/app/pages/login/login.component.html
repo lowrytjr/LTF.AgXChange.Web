@@ -1,24 +1,30 @@
 <div class="login-page">
-    <div class="login-box">
+    
+    <div class="login-box" style="position:relative;">
+        <app-loader [show]=_showLoadingOverlay></app-loader>
         <div class="login-header">Log On</div>
+        <div class="new-account-box" [hidden]="!_registrationState.isNewAccount">
+            <p>Welcome to AgXChange, <b>{{_registrationState.screenName}}</b>!</p>
+            <p>Be sure to check your inbox to verify your email.</p>
+        </div>
         <form [formGroup]="_loginForm" (ngSubmit)="SubmitLogon()">
             <div class="input-container">
                 <div class="input-label-container">
-                    <div class="input-label">Email Address</div><div class="loading" [hidden]="!_showEmailLoader"><img src="/assets/loading.gif"></div>
+                    <div class="input-label">Email Address</div>
                 </div>
                 <input id="userID" type="text" class="input-field" formControlName="userID" email="true">
-                <div class="account-error" [hidden]="!_showEmailError">{{_emailErrorText}}</div> 
+                <div class="input-error" [hidden]="!_showEmailError">{{_emailErrorText}}</div> 
             </div>
             <div class="input-container" [hidden]="!_showPassword">
                 <div class="input-label-container">
-                    <div class="input-label">Password</div><div class="loading" [hidden]="!_showPasswordLoader"><img src="/assets/loading.gif"></div>
+                    <div class="input-label">Password</div>
                 </div>
                 <input id="password" type="text" class="input-field" formControlName="password">
-                <div class="account-error" [hidden]="!_showPasswordError">{{_passwordErrorText}}</div>
+                <div class="input-error" [hidden]="!_showPasswordError">{{_passwordErrorText}}</div>
             </div>
             <button class="account-button" type="submit">{{_loginButtonText}}</button>
         </form>
         <div class="login-footer"><a routerLink="/forgot-password" routerLinkActive="active" ariaCurrentWhenActive="page">I forgot my password</a></div>
-        <div class="login-register">Not a user? <a routerLink="/create-account" routerLinkActive="active" ariaCurrentWhenActive="page">Register.</a></div>
+        <div class="login-register"><b>Not a user?</b>&nbsp;<a routerLink="/create-account" routerLinkActive="active" ariaCurrentWhenActive="page">Register.</a></div>
     </div>
 </div>

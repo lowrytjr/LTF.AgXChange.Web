@@ -46,11 +46,11 @@ export class ErrorComponent {
         return errorCode?.message!;
       }
       else {
-        return "unexpected_error";
+        return "Hmmm...An unexpected error ocurred.";
       }
     }
     catch(err) {
-      return "unexpected_error"
+      return "Hmmm...An unexpected error ocurred."
     }
   }
 }
