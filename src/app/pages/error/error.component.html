@@ -1,5 +1,6 @@
 <div class="error-page">
     <div class="message-box">
         {{_message}}
+        <div class="return-link" [hidden]="_errorState.link == undefined"><a routerLink="{{_errorState.link}}" routerLinkActive="active">{{_errorState.linkText}}</a></div>
     </div>
 </div>

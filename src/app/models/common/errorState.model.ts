@@ -1,11 +1,13 @@
 export class ErrorState {
     statusCode: number = 200;
     message: string | undefined;
-    page: string;
+    link: string | undefined;
+    linkText: string | undefined;
 
-    constructor(page: string, statusCode: number, message: string | undefined) {
+    constructor(statusCode: number, message: string | undefined, link: string | undefined, linkText: string | undefined) {
         this.statusCode = statusCode;
-        this.page = page;
         this.message = message;
+        this.link = link;
+        this.linkText = linkText;
     }
 }

@@ -114,7 +114,7 @@ export class LoginComponent {
               }
               else {
                 // Show error screen
-                this._router.navigateByUrl('/error', { state: new ErrorState("login", authenticateRequestResponse.statusCode, authenticateRequestResponse.message) });
+                this._router.navigateByUrl('/error', { state: new ErrorState(authenticateRequestResponse.statusCode, authenticateRequestResponse.message, "/login", "Return to login page") });
               }
             }
           );
@@ -176,7 +176,7 @@ export class LoginComponent {
         registrationState = this._router.getCurrentNavigation()?.extras?.state as RegistrationState;
       }
       else {
-        registrationState = new RegistrationState(true, "test@test.com", "WildMongrel");
+        registrationState = new RegistrationState(false, "", "");
       }
     }
     catch(err) {

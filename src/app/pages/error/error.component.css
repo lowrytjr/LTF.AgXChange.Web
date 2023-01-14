@@ -13,3 +13,10 @@
     padding: 60px;
     background-color: white;
 }
+.return-link {
+    padding: 10px;
+    font-size: 10pt;
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+}

@@ -21,11 +21,11 @@ export class ErrorComponent {
         this._errorState = this.router.getCurrentNavigation()?.extras?.state as ErrorState;
       }
       else {
-        this._errorState = new ErrorState("unknown", 500, "unexpected_error");
+        this._errorState = new ErrorState(500, "unexpected_error", undefined, undefined);
       }
     }
     catch(err) {
-      this._errorState = new ErrorState("unknown", 500, "unexpected_error");
+      this._errorState = new ErrorState(500, "unexpected_error", undefined, undefined);
     }
 
     // Map the error message

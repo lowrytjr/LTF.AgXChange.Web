@@ -135,7 +135,7 @@ export class CreateAccountComponent {
               }
               else {
                 // Show error screen
-                this._router.navigateByUrl('/error', { state: new ErrorState("login", accountRequestResponse.statusCode, accountRequestResponse.message) });
+                this._router.navigateByUrl('/error', { state: new ErrorState(accountRequestResponse.statusCode, accountRequestResponse.message, "/create-account", "Return to registration page") });
               }
             }
           }
@@ -200,7 +200,7 @@ export class CreateAccountComponent {
               }
               else {
                 // Show error screen
-                this._router.navigateByUrl('/error', { state: new ErrorState("login", accountCreateResponse.statusCode, accountCreateResponse.message) });
+                this._router.navigateByUrl('/error', { state: new ErrorState(accountCreateResponse.statusCode, accountCreateResponse.message, "/create-account", "Return to registration page") });
               }
             }
           }
