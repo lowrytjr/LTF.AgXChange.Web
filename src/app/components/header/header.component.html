@@ -7,13 +7,11 @@
     <!-- Menu -->
     <nav class="nav">
         <ul class="menu">
-            <li><a routerLink="/horses" routerLinkActive="active" ariaCurrentWhenActive="page">Horses</a></li>
-            <li><a routerLink="/cattle" routerLinkActive="active" ariaCurrentWhenActive="page">Cattle</a></li>
-            <li class="menu_divider"><span>|</span></li>
+            <li [hidden]="!_isLoggedIn"><a routerLink="/search" routerLinkActive="active" ariaCurrentWhenActive="page">Search</a></li>
             <li [hidden]="_isLoggedIn"><a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></li>
             <li [hidden]="!_isLoggedIn"><a routerLink="/profile" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a></li>
-            <li [hidden]="!_isLoggedIn"><button (click)="LogOut()">Logout</button></li>
             
+            <li [hidden]="!_isLoggedIn"><a routerLink="/logout" (click)="LogOut()" routerLinkActive="active" ariaCurrentWhenActive="page">Logout</a></li>
         </ul>
     </nav>
 </header>

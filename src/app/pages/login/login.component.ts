@@ -42,7 +42,7 @@ export class LoginComponent {
     formBuilder: FormBuilder, 
     authenticateService: AuthenticateService, 
     renderer: Renderer2, 
-    router: Router, 
+    router: Router,
     appSettings: AppSettingsService) {
       // Initialize properties
       this._formBuilder = formBuilder;
@@ -88,13 +88,13 @@ export class LoginComponent {
           return;
         }
         else {
+          // Get the email address from the form
+          let authenticateRequestRequest = new AuthenticateRequestRequest(this._loginForm.value.userID!);
+
           // Hide the email error message, disable the email box and show the loader
           this._showEmailError = false;
           this._showLoadingOverlay = true;
           this._loginForm.controls['userID'].disable();
-
-          // Get the email address from the form
-          let authenticateRequestRequest = new AuthenticateRequestRequest(this._loginForm.value.userID!);
 
           // Call the authenticate service
           this._authenticateService.authenticateRequest(authenticateRequestRequest).subscribe(

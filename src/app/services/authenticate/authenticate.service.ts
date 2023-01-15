@@ -7,18 +7,22 @@ import { map, Observable, tap } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { AccountVerifyRequest } from 'src/app/models/account/accountVerifyRequest.model';
 import { ApiResponse } from 'src/app/models/common/apiResponse.model';
+import { UserSession } from 'src/app/models/account/userSession.model';
+import { UserProfile } from 'src/app/models/account/userProfile.model';
+import { LogoutRequest } from 'src/app/models/account/logoutRequest.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticateService {
-  _isLoggedIn : boolean = false;
+  _userSession: UserSession;
+  
   @Output() LoggedIn: EventEmitter<any> = new EventEmitter<any>();
 
   /** ============================================================ */
   /** Constructor */
   constructor(private http: HttpService) {
-    this._isLoggedIn = localStorage.getItem('isLoggedIn') == "true";
+    this._userSession = this.GetUserSession();
   }
 
   /** ============================================================ */
@@ -32,12 +36,12 @@ export class AuthenticateService {
   authenticate(authenticateRequest: AuthenticateRequest): Observable<AuthenticateResponse> {
     return this.http.Post<AuthenticateResponse>(authenticateRequest, "authenticate/login").pipe(
       tap(data => {
-        if (data.jwt)
+        if (data.isLoggedIn)
         {
-          localStorage.setItem('isLoggedIn', "true");
-          localStorage.setItem('id_token', data.jwt);
-          this._isLoggedIn = true;
-          this.LoggedIn.emit(this._isLoggedIn);
+          let userProfile = new UserProfile(data.emailAddress, data.screenName);
+          let userSession = new UserSession(userProfile, data.isLoggedIn);
+          this.PutUserSession(userSession);
+          this.LoggedIn.emit(true);
         }
       }),
       map(val => { return val})
@@ -46,17 +50,49 @@ export class AuthenticateService {
 
   /** ============================================================ */
   /** Log Out */
-  logOut() {
-    localStorage.setItem('isLoggedIn', "false");
-    localStorage.setItem('id_token', "");
-    this._isLoggedIn = false;
-    this.LoggedIn.emit(this._isLoggedIn);
+  logOut(logoutRequest: LogoutRequest): Observable<ApiResponse> {
+    return this.http.Post<ApiResponse>(logoutRequest, "authenticate/logout").pipe(
+      tap(data => {
+        this.ClearUserSession();
+      }),
+      map(val => { return val})
+    );
+  }
+
+  /** ============================================================ */
+  /** Get user session */
+  GetUserSession() : UserSession {
+    let isLoggedIn = localStorage.getItem('isLoggedIn') == "true";
+    let emailAddress = sessionStorage.getItem('emailAddress') ?? undefined;
+    let screenName = sessionStorage.getItem('screenName') ?? undefined;
+    let userProfile = new UserProfile(emailAddress, screenName);
+
+    return new UserSession(userProfile, isLoggedIn)
+  }
+
+  /** ============================================================ */
+  /** Put user session */
+  PutUserSession(userSession: UserSession) : UserSession {
+    localStorage.setItem('isLoggedIn', userSession.isLoggedIn ? "true" : "false");
+    sessionStorage.setItem("emailAddress", userSession.userProfile.emailAddress);
+    sessionStorage.setItem("screenName", userSession.userProfile.screenName);
+
+    return this.GetUserSession();
+  }
+
+  /** ============================================================ */
+  /** Clear user session */
+  ClearUserSession() : void {
+    let userProfile = new UserProfile("", "");
+    let userSession = new UserSession(userProfile, false);
+    this.PutUserSession(userSession);
+    this.LoggedIn.emit(false);
   }
 
   /** ============================================================ */
   /** Return user logged in status */
   IsLoggedIn() : boolean {
-    return this._isLoggedIn;
+    return this._userSession.isLoggedIn;
   }
 
   /** ============================================================ */

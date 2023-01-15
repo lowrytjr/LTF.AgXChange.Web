@@ -19,6 +19,9 @@ import { CreateAccountComponent } from './pages/create-account/create-account.co
 import { ErrorComponent } from './pages/error/error.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { AuthenticateGuard } from './services/authenticate/authenticate.guard';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { LogoutComponent } from './pages/logout/logout.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,10 +29,12 @@ const appRoutes: Routes = [
   { path: 'verify-account', component: VerifyAccountComponent },
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'profile', component: ProfileComponent, canActivate:[AuthenticateGuard] },
+  { path: 'logout', component: LogoutComponent },
   { path: 'error', component: ErrorComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
-
+//canActivate:[AuthenticateGuard]
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +47,9 @@ const appRoutes: Routes = [
     CreateAccountComponent,
     ErrorComponent,
     ForgotPasswordComponent,
-    LoaderComponent
+    LoaderComponent,
+    ProfileComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +62,7 @@ const appRoutes: Routes = [
     ),
     BrowserAnimationsModule
   ],
-  providers: [AppSettingsService, HttpService, AccountService, AuthenticateService],
+  providers: [AppSettingsService, HttpService, AccountService, AuthenticateService, AuthenticateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
