@@ -11,8 +11,7 @@
 .header{
     background-color: var(--black);
     box-shadow: 1px 1px 5px 0px var(--grey);
-    position: sticky;
-    top: 0px;
+    
     width: 100%;
 }
 
@@ -31,7 +30,7 @@
     position: fixed;
     background-color: var(--black);
     overflow: hidden;
-
+    z-index: 10;
 }
 .menu a, .menu span {
     display: block;
@@ -111,6 +110,7 @@
         float: right;
         width: fit-content;
         background-color: transparent;
+        z-index: 10;
     }
     .menu li{
         float: left;

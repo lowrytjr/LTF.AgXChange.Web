@@ -12,6 +12,7 @@
     --cornSilk: #FFF8DC;
     --whiteSmoke: #F0F0F0;
     --whisper: #E8E8E8;
+    --lightSilver: #D8D8D8;
     --safetyOrange: #FA6400;
     --pumpkin: #FB8332;
     --burntOrange: #C85000;
@@ -44,18 +45,17 @@ input:focus, textarea:focus, select:focus{
     padding: 0px;
 }
 .input-container-disabled {
-    background-color: var(--cornSilk);
+    background-color: var(--whiteSmoke);
 }
 .input-label-container {
     display: inline-flex;
     flex-wrap: nowrap;
     width: 100%;
     background-color: var(--whiteSmoke);
-    border-radius: 4px;
+    border-radius: 4px 4px 0px 0px;
     font-size: 12pt;
     padding: 5px;
     font-weight: 400;
-    border-bottom: 1px solid var(--whisper);
     color: var(--black);
 }
 .input-label {
@@ -68,10 +68,11 @@ input:focus, textarea:focus, select:focus{
     font-size: 13pt;
     color: var(--midnightBlue);
     padding: 5px;
-    border-radius: 4px;
+    border-radius: 0px 0px 4px 4px;
 }
 .input-field-disabled {
-    background-color: var(--cornSilk);
+    background-color: var(--whiteSmoke);
+    border-top: 1px solid var(--lightSilver);
 }
 .input-error {
     color: red;
@@ -80,7 +81,6 @@ input:focus, textarea:focus, select:focus{
     background-color: var(--whiteSmoke);
     border-radius: 4px;
     padding: 5px;
-    border-top: 1px solid var(--whisper);
 }
 .account-button {
     width: 100%;

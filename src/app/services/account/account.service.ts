@@ -7,6 +7,8 @@ import { AccountRequestResponse } from 'src/app/models/account/accountRequestRes
 import { AccountRequestRequest } from 'src/app/models/account/accountRequestRequest.model';
 import { AccountCreateRequest } from 'src/app/models/account/accountCreateRequest.model';
 import { AccountCreateResponse } from 'src/app/models/account/accountCreateResponse.model';
+import { PasswordResetRequestRequest } from 'src/app/models/account/PasswordResetRequestRequest.model';
+import { PasswordResetRequest } from 'src/app/models/account/PasswordResetRequest.model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,4 +51,26 @@ export class AccountService {
       map(val => { return val})
     );
   } 
+
+  /** ============================================================ */
+  /** POST: Request Password Reset */
+  RequestPasswordReset(passwordResetRequestRequest: PasswordResetRequestRequest): Observable<ApiResponse> {
+    return this.http.Post<ApiResponse>(passwordResetRequestRequest, "account/password/reset/request").pipe(
+      tap(data => {
+        
+      }),
+      map(val => { return val})
+    );
+  }
+  
+  /** ============================================================ */
+  /** POST: Password Reset */
+  PasswordReset(passwordResetRequest: PasswordResetRequest): Observable<ApiResponse> {
+    return this.http.Post<ApiResponse>(passwordResetRequest, "account/password/reset").pipe(
+      tap(data => {
+        
+      }),
+      map(val => { return val})
+    );
+  }
 }

@@ -23,7 +23,7 @@ export class LoginComponent {
   private _emailToken: string;
   private _appSettings: AppSettingsService;
   private _renderer: Renderer2;
-  private _router: Router
+  private _router: Router;
 
   _registrationState: RegistrationState;
   _loginForm: FormGroup;
@@ -35,7 +35,8 @@ export class LoginComponent {
   _showEmailError: boolean = false;
   _showPasswordError: boolean = false;
   _showLoadingOverlay: boolean = false;
-  
+  _disableUserID: boolean = false;
+
   /** ============================================================ */
   /** Constructor */
   constructor(
@@ -95,6 +96,7 @@ export class LoginComponent {
           this._showEmailError = false;
           this._showLoadingOverlay = true;
           this._loginForm.controls['userID'].disable();
+          this._disableUserID = true;
 
           // Call the authenticate service
           this._authenticateService.authenticateRequest(authenticateRequestRequest).subscribe(
@@ -157,7 +159,9 @@ export class LoginComponent {
 
                 default:
                   // Show error screen
-                  this._router.navigateByUrl('/error', { state: { statusCode:authenticateResponse.statusCode , message:authenticateResponse.message } });
+                  this._router.navigateByUrl('/error', { state: new ErrorState(authenticateResponse.statusCode, authenticateResponse.message, "/login", "Return to the login page") });
+
+                  
                   break;
               }
             }

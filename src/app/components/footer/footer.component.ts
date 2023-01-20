@@ -18,7 +18,8 @@ export class FooterComponent {
       this._authenticateService = authenticateService;
 
       // Get current logged in state
-      this._isLoggedIn = this._authenticateService.IsLoggedIn();
+      let userSession = this._authenticateService.GetUserSession();
+      this._isLoggedIn = userSession.isLoggedIn;
 
       // Subscribe to future login/logout events
       this._authenticateService.GetIsLoggedIn().subscribe((isLoggedIn) => { 

@@ -24,12 +24,18 @@ export class HeaderComponent {
       this._authenticateService = authenticateService;
 
       // Get current logged in state
-      this._isLoggedIn = this._authenticateService.IsLoggedIn();
+      let userSession = this._authenticateService.GetUserSession();
+      this._isLoggedIn = userSession.isLoggedIn;
 
       // Subscribe to future login/logout events
       this._authenticateService.GetIsLoggedIn().subscribe((isLoggedIn) => { 
         this._isLoggedIn = isLoggedIn;
       });
+  }
+
+  CloseMenu() {
+    var element = <HTMLInputElement> document.getElementById("side-menu");
+    element.checked = false;
   }
 
   /** ============================================================ */
@@ -38,6 +44,8 @@ export class HeaderComponent {
     let userSession = this._authenticateService.GetUserSession();
     let logoutRequest = new LogoutRequest(userSession.userProfile.emailAddress);
 
+    this.CloseMenu();
+    
     this._authenticateService.logOut(logoutRequest).subscribe(
       logoutResponse => {
         if (logoutResponse.statusCode != 200) {

@@ -90,12 +90,6 @@ export class AuthenticateService {
   }
 
   /** ============================================================ */
-  /** Return user logged in status */
-  IsLoggedIn() : boolean {
-    return this._userSession.isLoggedIn;
-  }
-
-  /** ============================================================ */
   /** Subscribe to user login/logout events */
   GetIsLoggedIn() { 
     return this.LoggedIn; 

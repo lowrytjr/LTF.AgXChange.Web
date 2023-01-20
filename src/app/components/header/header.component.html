@@ -1,17 +1,17 @@
 <header class="header">
-    <!-- Logo -->
-    <a href="#" class="logo">Ax</a>
-    <!-- Hamburger icon -->
-    <input class="side-menu" type="checkbox" id="side-menu"/>
-    <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
-    <!-- Menu -->
-    <nav class="nav">
-        <ul class="menu">
-            <li [hidden]="!_isLoggedIn"><a routerLink="/search" routerLinkActive="active" ariaCurrentWhenActive="page">Search</a></li>
-            <li [hidden]="_isLoggedIn"><a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></li>
-            <li [hidden]="!_isLoggedIn"><a routerLink="/profile" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a></li>
-            
-            <li [hidden]="!_isLoggedIn"><a routerLink="/logout" (click)="LogOut()" routerLinkActive="active" ariaCurrentWhenActive="page">Logout</a></li>
-        </ul>
-    </nav>
+  <!-- Logo -->
+  <a href="#" class="logo">Ax</a>
+  <!-- Hamburger icon -->
+  <input class="side-menu" type="checkbox" id="side-menu"/>
+  <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+  <!-- Menu -->
+  <nav class="nav">
+      <ul class="menu">
+          <li [hidden]="!_isLoggedIn"><a routerLink="/search" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Search</a></li>
+          <li [hidden]="_isLoggedIn"><a routerLink="/login" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></li>
+          <li [hidden]="_isLoggedIn"><a routerLink="/create-account" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Sign Up</a></li>
+          <li [hidden]="!_isLoggedIn"><a routerLink="/profile" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a></li>
+          <li [hidden]="!_isLoggedIn"><a routerLink="/logout" (click)="LogOut()" routerLinkActive="active" ariaCurrentWhenActive="page">Logout</a></li>
+      </ul>
+  </nav>
 </header>

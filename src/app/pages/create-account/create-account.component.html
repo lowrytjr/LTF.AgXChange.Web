@@ -1,7 +1,7 @@
 <div class="create-account-page">
     <div class="create-account-box" style="position:relative;">
         <app-loader [show]=_showLoadingOverlay></app-loader>
-        <div class="create-account-header">Register Account</div>
+        <div class="create-account-header">Sign Up</div>
         <form [formGroup]="_createAccountForm" (ngSubmit)="SubmitRegistration()">
             <div [ngClass]="{'input-container': true, 'input-container-disabled': _disableUserInputs}">
                 <div class="input-label-container">

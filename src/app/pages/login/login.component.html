@@ -1,6 +1,5 @@
 <div class="login-page">
-    
-    <div class="login-box" style="position:relative;">
+    <div class="login-box">
         <app-loader [show]=_showLoadingOverlay></app-loader>
         <div class="login-header">Log On</div>
         <div class="new-account-box" [hidden]="!_registrationState.isNewAccount">
@@ -12,19 +11,19 @@
                 <div class="input-label-container">
                     <div class="input-label">Email Address</div>
                 </div>
-                <input id="userID" type="text" class="input-field" formControlName="userID" email="true">
+                <input id="userID" type="text" [ngClass]="{'input-field': true, 'input-field-disabled': _disableUserID}" formControlName="userID" email="true">
                 <div class="input-error" [hidden]="!_showEmailError">{{_emailErrorText}}</div> 
             </div>
             <div class="input-container" [hidden]="!_showPassword">
                 <div class="input-label-container">
                     <div class="input-label">Password</div>
                 </div>
-                <input id="password" type="text" class="input-field" formControlName="password">
+                <input id="password" type="password" class="input-field" formControlName="password">
                 <div class="input-error" [hidden]="!_showPasswordError">{{_passwordErrorText}}</div>
             </div>
             <button class="account-button" type="submit">{{_loginButtonText}}</button>
         </form>
         <div class="login-footer"><a routerLink="/forgot-password" routerLinkActive="active" ariaCurrentWhenActive="page">I forgot my password</a></div>
-        <div class="login-register"><b>Not a user?</b>&nbsp;<a routerLink="/create-account" routerLinkActive="active" ariaCurrentWhenActive="page">Register.</a></div>
+        <div class="login-register"><b>Don't have an account?</b>&nbsp;<a routerLink="/create-account" routerLinkActive="active" ariaCurrentWhenActive="page">Sign Up.</a></div>
     </div>
 </div>

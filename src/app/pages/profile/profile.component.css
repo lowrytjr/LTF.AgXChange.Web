@@ -1,0 +1,41 @@
+.profile-page {
+    display: inline-flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    padding: 80px 100px 80px 100px;
+}
+.user-info-box {
+    border: 1px solid;
+    border-radius: 4px;
+    margin: 5px;
+    padding: 20px 20px 10px 20px;
+    background-color: white;
+    width: 40%;
+    min-width: 300px;
+    max-width: 400px;
+}
+.user-info-header {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 20px;
+    font-size: 18pt;
+    color: var(--black);
+}
+.subscription-info-box {
+    border: 1px solid;
+    border-radius: 4px;
+    margin: 5px;
+    padding: 20px 20px 10px 20px;
+    background-color: white;
+    width: 40%;
+    min-width: 300px;
+    max-width: 400px;
+}
+.subscription-info-header {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 20px;
+    font-size: 18pt;
+    color: var(--black);
+}

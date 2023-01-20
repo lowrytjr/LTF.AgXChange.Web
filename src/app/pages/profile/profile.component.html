@@ -1,5 +1,26 @@
-<p>profile works!</p>
-<p>Email Address: {{_userSession.userProfile.emailAddress}}</p>
-<p>ScreenName: {{_userSession.userProfile.screenName}}</p>
-<p>IsLoggedIn: {{_userSession.isLoggedIn ? "true" : "false"}}</p>
+<div class="profile-page">
+    <div class="user-info-box" style="position:relative;">
+        <app-loader [show]=_showUserLoadingOverlay></app-loader>
+        <div class="user-info-header">User Information</div>
+        <form [formGroup]="_userInfoForm">
+            <div class="input-container">
+                <div class="input-label-container">
+                    <div class="input-label">Email Address</div>
+                </div>
+                <input id="userID" type="text" [ngClass]="{'input-field': true, 'input-field-disabled': _disableUserID}" formControlName="userID" email="true">
+                <div class="input-error" [hidden]="!_showEmailError">{{_emailErrorText}}</div> 
+            </div>
+            <div class="input-container">
+                <div class="input-label-container">
+                    <div class="input-label">Screen Name</div>
+                </div>
+                <input id="screenName" type="text" [ngClass]="{'input-field': true, 'input-field-disabled': _disableScreenName}" formControlName="screenName">
+                <div class="input-error" [hidden]="!_showScreenNameError">{{_screenNameErrorText}}</div> 
+            </div>
+        </form>
+    </div>
+    <div class="user-info-box" style="position:relative;">
+        <div class="user-info-header">Subscription Information</div>
+    </div>
+</div>
 

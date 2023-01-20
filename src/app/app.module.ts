@@ -22,6 +22,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { AuthenticateGuard } from './services/authenticate/authenticate.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { LogoutComponent } from './pages/logout/logout.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
   { path: 'verify-account', component: VerifyAccountComponent },
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'profile', component: ProfileComponent, canActivate:[AuthenticateGuard] },
   { path: 'logout', component: LogoutComponent },
   { path: 'error', component: ErrorComponent },
@@ -49,7 +51,8 @@ const appRoutes: Routes = [
     ForgotPasswordComponent,
     LoaderComponent,
     ProfileComponent,
-    LogoutComponent
+    LogoutComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,
