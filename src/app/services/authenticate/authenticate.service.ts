@@ -17,7 +17,6 @@ import { LogoutRequest } from 'src/app/models/account/logoutRequest.model';
 export class AuthenticateService {
   _userSession: UserSession;
   
-  @Output() LoggedIn: EventEmitter<any> = new EventEmitter<any>();
   @Output() UserSession: EventEmitter<any> = new EventEmitter<any>();
 
   /** ============================================================ */
@@ -42,7 +41,6 @@ export class AuthenticateService {
           let userProfile = new UserProfile(data.emailAddress, data.screenName);
           let userSession = new UserSession(userProfile, data.isLoggedIn);
           this._userSession = this.PutUserSession(userSession);
-          this.LoggedIn.emit(true);
           this.UserSession.emit(this._userSession);
         }
       }),
@@ -56,7 +54,6 @@ export class AuthenticateService {
     return this.http.Post<ApiResponse>(logoutRequest, "authenticate/logout").pipe(
       tap(data => {
         this._userSession = this.ClearUserSession();
-        this.LoggedIn.emit(true);
         this.UserSession.emit(this._userSession);
       }),
       map(val => { return val})
@@ -95,11 +92,7 @@ export class AuthenticateService {
   }
 
   /** ============================================================ */
-  /** Subscribe to user login/logout events */
-  GetIsLoggedIn() { 
-    return this.LoggedIn; 
-  }
-
+  /** Emit user session to subscribers */
   EmitUserSession() {
     return this.UserSession;
   }

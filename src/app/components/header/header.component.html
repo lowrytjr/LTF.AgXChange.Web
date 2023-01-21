@@ -1,6 +1,7 @@
 <div class="topnav" id="mainMenu">
   <div class="home"><a routerLink="/" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Ax</a></div>
   <div [ngClass]="{'dropdown': _userSession.isLoggedIn, 'dropdown-hidden': !_userSession.isLoggedIn}" (mouseleave)="CloseSubMenu('profileDropdown')">
+    <div class="dropIcon" style="float: left;">icon</div>
     <button class="dropbtn" (click)="ToggleSubMenu('profileDropdown')">{{_userSession.userProfile.screenName}}
       <i class="fa fa-caret-down"></i>
     </button>

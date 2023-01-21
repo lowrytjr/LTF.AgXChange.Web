@@ -56,12 +56,24 @@
   margin: 0;
 }
 
+.dropdown .dropIcon {
+  font-size: 17px;
+  border: none;
+  outline: none;
+  color: var(--offBlack);
+  padding: 14px 16px;
+  border-right: 1px solid var(--black);
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
 /* Style the dropdown content (hidden by default) */
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 160px;
+  min-width: 180px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
@@ -95,7 +107,7 @@
 
 /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
 @media screen and (max-width: 600px) {
-  .topnav a:not(:first-child), .dropdown .dropbtn, .item {
+  .topnav a:not(:first-child), .dropdown .dropbtn, .dropdown .dropIcon, .item {
     display: none;
   }
   .topnav a.icon {
@@ -117,13 +129,19 @@
     display: block;
     text-align: left;
   }
-  .topnav.responsive .dropdown {float: none;}
+  .topnav.responsive .dropdown {
+    float: none;
+    background-color: inherit;
+    border-radius: 0px;
+    margin: 0px;
+  }
   .topnav.responsive .item {float: none;}
   .topnav.responsive .dropdown-content {position: relative;}
   .topnav.responsive .dropdown .dropbtn {
     display: block;
     width: 100%;
     text-align: left;
+    color: #f2f2f2;
   }
   .topnav.responsive .item {
     display: block;

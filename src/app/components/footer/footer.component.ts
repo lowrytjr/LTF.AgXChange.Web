@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserSession } from 'src/app/models/account/userSession.model';
 import { AuthenticateService } from 'src/app/services/authenticate/authenticate.service';
 
 @Component({
@@ -8,7 +9,8 @@ import { AuthenticateService } from 'src/app/services/authenticate/authenticate.
 })
 export class FooterComponent {
   private _authenticateService: AuthenticateService;
-  _isLoggedIn: boolean;
+  
+  _userSession: UserSession;
   
   /** ============================================================ */
   /** Constructor */
@@ -17,13 +19,12 @@ export class FooterComponent {
   ) {
       this._authenticateService = authenticateService;
 
-      // Get current logged in state
-      let userSession = this._authenticateService.GetUserSession();
-      this._isLoggedIn = userSession.isLoggedIn;
+      // Get current USer Session
+      this._userSession = this._authenticateService.GetUserSession();
 
-      // Subscribe to future login/logout events
-      this._authenticateService.GetIsLoggedIn().subscribe((isLoggedIn) => { 
-        this._isLoggedIn = isLoggedIn;
+      // Subscribe to future userSession events
+      this._authenticateService.EmitUserSession().subscribe((userSession) => { 
+        this._userSession = userSession;
       });
   }
 }
