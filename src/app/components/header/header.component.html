@@ -1,17 +1,16 @@
-<header class="header">
-  <!-- Logo -->
-  <a href="#" class="logo">Ax</a>
-  <!-- Hamburger icon -->
-  <input class="side-menu" type="checkbox" id="side-menu"/>
-  <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
-  <!-- Menu -->
-  <nav class="nav">
-      <ul class="menu">
-          <li [hidden]="!_isLoggedIn"><a routerLink="/search" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Search</a></li>
-          <li [hidden]="_isLoggedIn"><a routerLink="/login" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></li>
-          <li [hidden]="_isLoggedIn"><a routerLink="/create-account" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Sign Up</a></li>
-          <li [hidden]="!_isLoggedIn"><a routerLink="/profile" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a></li>
-          <li [hidden]="!_isLoggedIn"><a routerLink="/logout" (click)="LogOut()" routerLinkActive="active" ariaCurrentWhenActive="page">Logout</a></li>
-      </ul>
-  </nav>
-</header>
+<div class="topnav" id="mainMenu">
+  <div class="home"><a routerLink="/" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Ax</a></div>
+  <div [ngClass]="{'dropdown': _userSession.isLoggedIn, 'dropdown-hidden': !_userSession.isLoggedIn}" (mouseleave)="CloseSubMenu('profileDropdown')">
+    <button class="dropbtn" (click)="ToggleSubMenu('profileDropdown')">{{_userSession.userProfile.screenName}}
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content" id="profileDropdown">
+      <a href="#"><a routerLink="/profile" (click)="CloseMenu('profileDropdown')" routerLinkActive="active" ariaCurrentWhenActive="page">Settings</a></a>
+      <a href="#"><a routerLink="/logout" (click)="LogOut()" routerLinkActive="active" ariaCurrentWhenActive="page">Logout</a></a>
+    </div>
+  </div>
+  <div [ngClass]="{'item': _userSession.isLoggedIn, 'item-hidden': !_userSession.isLoggedIn}"><a routerLink="/search" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Search</a></div>
+  <div [ngClass]="{'item': !_userSession.isLoggedIn, 'item-hidden': _userSession.isLoggedIn}"><a routerLink="/login" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></div>
+  <div [ngClass]="{'item': !_userSession.isLoggedIn, 'item-hidden': _userSession.isLoggedIn}"><a routerLink="/create-account" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Sign Up</a></div>
+  <a href="javascript:void(0);" class="icon" (click)="ToggleMenu()">&#9776;</a>
+</div>

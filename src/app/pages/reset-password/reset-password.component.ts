@@ -60,8 +60,11 @@ export class ResetPasswordComponent {
   ngOnInit() {
     this._route.queryParams
       .subscribe(params => {
-        console.log(params); // { orderby: "price" }
         this._passwordResetToken = params["t"];
+        if (!this._passwordResetToken) {
+          // Redirect to forgot password page
+          this._router.navigateByUrl('/forgot-password');
+        }
       }
     );
   }

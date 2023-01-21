@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LogoutRequest } from 'src/app/models/account/logoutRequest.model';
+import { UserSession } from 'src/app/models/account/userSession.model';
 import { AuthenticateService } from 'src/app/services/authenticate/authenticate.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class HeaderComponent {
   private _authenticateService: AuthenticateService;
   private _router: Router;
 
-  _isLoggedIn: boolean;
+  _userSession: UserSession;
   
   /** ============================================================ */
   /** Constructor */
@@ -23,19 +24,53 @@ export class HeaderComponent {
       this._router = router;
       this._authenticateService = authenticateService;
 
-      // Get current logged in state
-      let userSession = this._authenticateService.GetUserSession();
-      this._isLoggedIn = userSession.isLoggedIn;
+      // Get current USer Session
+      this._userSession = this._authenticateService.GetUserSession();
 
-      // Subscribe to future login/logout events
-      this._authenticateService.GetIsLoggedIn().subscribe((isLoggedIn) => { 
-        this._isLoggedIn = isLoggedIn;
+      // Subscribe to future userSession events
+      this._authenticateService.EmitUserSession().subscribe((userSession) => { 
+        this._userSession = userSession;
       });
   }
 
-  CloseMenu() {
-    var element = <HTMLInputElement> document.getElementById("side-menu");
-    element.checked = false;
+  /** ============================================================ */
+  /* Close the menu */
+  CloseMenu(submenu: string | undefined = undefined) {
+    var element = <HTMLInputElement> document.getElementById("mainMenu");
+    element.className = "topnav";
+
+    if (submenu != undefined) {
+      this.CloseSubMenu(submenu);
+    }
+  }
+
+  /** ============================================================ */
+  /* Toggle Top Menu */
+  ToggleMenu() {
+    var element = <HTMLInputElement> document.getElementById("mainMenu");
+    if (element.className === "topnav") {
+      element.className += " responsive";
+    } else {
+      element.className = "topnav";
+    }
+  }
+
+  /** ============================================================ */
+  /* Toggle SubMenu */
+  ToggleSubMenu(elementID: string) {
+    var element = <HTMLInputElement> document.getElementById(elementID);
+    if (element.className === "dropdown-content") {
+      element.className += " dropdown-open";
+    } else {
+      element.className = "dropdown-content";
+    }
+  }
+
+  /** ============================================================ */
+  /* Close SubMenu */
+  CloseSubMenu(elementID: string) {
+    var element = <HTMLInputElement> document.getElementById(elementID);
+    element.className = "dropdown-content";
   }
 
   /** ============================================================ */
@@ -45,7 +80,7 @@ export class HeaderComponent {
     let logoutRequest = new LogoutRequest(userSession.userProfile.emailAddress);
 
     this.CloseMenu();
-    
+
     this._authenticateService.logOut(logoutRequest).subscribe(
       logoutResponse => {
         if (logoutResponse.statusCode != 200) {

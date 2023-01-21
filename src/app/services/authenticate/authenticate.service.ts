@@ -18,6 +18,7 @@ export class AuthenticateService {
   _userSession: UserSession;
   
   @Output() LoggedIn: EventEmitter<any> = new EventEmitter<any>();
+  @Output() UserSession: EventEmitter<any> = new EventEmitter<any>();
 
   /** ============================================================ */
   /** Constructor */
@@ -40,8 +41,9 @@ export class AuthenticateService {
         {
           let userProfile = new UserProfile(data.emailAddress, data.screenName);
           let userSession = new UserSession(userProfile, data.isLoggedIn);
-          this.PutUserSession(userSession);
+          this._userSession = this.PutUserSession(userSession);
           this.LoggedIn.emit(true);
+          this.UserSession.emit(this._userSession);
         }
       }),
       map(val => { return val})
@@ -53,7 +55,9 @@ export class AuthenticateService {
   logOut(logoutRequest: LogoutRequest): Observable<ApiResponse> {
     return this.http.Post<ApiResponse>(logoutRequest, "authenticate/logout").pipe(
       tap(data => {
-        this.ClearUserSession();
+        this._userSession = this.ClearUserSession();
+        this.LoggedIn.emit(true);
+        this.UserSession.emit(this._userSession);
       }),
       map(val => { return val})
     );
@@ -82,16 +86,21 @@ export class AuthenticateService {
 
   /** ============================================================ */
   /** Clear user session */
-  ClearUserSession() : void {
+  ClearUserSession() : UserSession {
     let userProfile = new UserProfile("", "");
     let userSession = new UserSession(userProfile, false);
     this.PutUserSession(userSession);
-    this.LoggedIn.emit(false);
+
+    return userSession;
   }
 
   /** ============================================================ */
   /** Subscribe to user login/logout events */
   GetIsLoggedIn() { 
     return this.LoggedIn; 
+  }
+
+  EmitUserSession() {
+    return this.UserSession;
   }
 }
