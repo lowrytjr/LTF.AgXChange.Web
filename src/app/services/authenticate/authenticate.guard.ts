@@ -21,7 +21,7 @@ export class AuthenticateGuard implements CanActivate {
 
     let userSession = this._authenticateService.GetUserSession();
 
-    if (userSession.isLoggedIn) {
+    if (userSession.userProfile.accountId) {
       return true;
     } 
     else {

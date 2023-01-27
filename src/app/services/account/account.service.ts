@@ -9,6 +9,8 @@ import { AccountCreateRequest } from 'src/app/models/account/accountCreateReques
 import { AccountCreateResponse } from 'src/app/models/account/accountCreateResponse.model';
 import { PasswordResetRequestRequest } from 'src/app/models/account/PasswordResetRequestRequest.model';
 import { PasswordResetRequest } from 'src/app/models/account/PasswordResetRequest.model';
+import { AccountRetrieveRequest } from 'src/app/models/account/accountRetrieveRequest.model';
+import { AccountRetrieveResponse } from 'src/app/models/account/accountRetrieveResponse.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +36,17 @@ export class AccountService {
   /** POST: Create Account */
   createAccount(accountCreateRequest: AccountCreateRequest): Observable<AccountCreateResponse> {
     return this.http.Post<AccountCreateResponse>(accountCreateRequest, "account/create").pipe(
+      tap(data => {
+        
+      }),
+      map(val => { return val})
+    );
+  }
+
+  /** ============================================================ */
+  /** POST: Request Account */
+  retrieveAccount(accountRequestRequest: AccountRetrieveRequest): Observable<AccountRetrieveResponse> {
+    return this.http.Post<AccountRetrieveResponse>(accountRequestRequest, "account/retrieve").pipe(
       tap(data => {
         
       }),

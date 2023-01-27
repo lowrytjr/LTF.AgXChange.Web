@@ -1,9 +1,13 @@
 export class UserProfile {
-    emailAddress: string;
-    screenName: string;
+    accountId: string | undefined;
+    emailAddress: string | undefined;
+    screenName: string | undefined;
+    emailVerified: boolean
 
-    constructor(emailAddress: string | undefined, screenName: string | undefined) {
-        this.emailAddress = emailAddress ?? "invalid";
-        this.screenName = screenName ?? "invalid";
+    constructor(accountId: string | undefined, emailAddress: string | undefined, screenName: string | undefined, emailVerified: boolean) {
+        this.accountId = accountId;
+        this.emailAddress = emailAddress;
+        this.screenName = screenName;
+        this.emailVerified = emailVerified;
     }
 }

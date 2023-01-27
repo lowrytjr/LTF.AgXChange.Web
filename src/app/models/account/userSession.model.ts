@@ -2,10 +2,12 @@ import { UserProfile } from "./userProfile.model";
 
 export class UserSession {
     userProfile: UserProfile;
-    isLoggedIn: boolean;
 
-    constructor(userProfile: UserProfile, isLoggedIn: boolean) {
+    constructor(userProfile: UserProfile) {
         this.userProfile = userProfile;
-        this.isLoggedIn = isLoggedIn;
+    }
+
+    public get isLoggedIn() {
+        return this.userProfile.accountId ? true : false;
     }
 }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +9,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './pages/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AccountService } from './services/account/account.service';
 import { AuthenticateService } from './services/authenticate/authenticate.service';
 import { HttpService } from './services/http/http.service';
@@ -36,7 +36,7 @@ const appRoutes: Routes = [
   { path: 'error', component: ErrorComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
-//canActivate:[AuthenticateGuard]
+
 @NgModule({
   declarations: [
     AppComponent,
