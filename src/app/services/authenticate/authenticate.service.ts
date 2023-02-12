@@ -16,36 +16,55 @@ import { AccountRetrieveResponse } from 'src/app/models/account/accountRetrieveR
   providedIn: 'root'
 })
 export class AuthenticateService {
+  private http: HttpService;
   _userSession: UserSession;
   
   @Output() UserSession: EventEmitter<any> = new EventEmitter<any>();
 
   /** ============================================================ */
   /** Constructor */
-  constructor(private http: HttpService) {
+  constructor(http: HttpService) {
+    // Initialize the services
+    this.http = http;
+
+    // Get the user session 
     this._userSession = this.GetUserSession();
-    if (this._userSession.userProfile.accountId && (!this._userSession.userProfile.emailAddress || !this._userSession.userProfile.screenName)) {
-      this.retrieveAccount(new AccountRetrieveRequest(this._userSession.userProfile.accountId)).subscribe(
+
+    console.log("AuthenticateService:Constructor");
+  }
+
+  /** ============================================================ */
+  /** POST: Initialize the User Session */
+  initializeSession(): boolean {
+    if (this._userSession.isLoggedIn) {
+      this.retrieveAccount(new AccountRetrieveRequest(this._userSession.userProfile.accountId!)).subscribe(
         accountResponse => {
           if (accountResponse.statusCode == 200) {
             let userProfile = new UserProfile(accountResponse.accountId, accountResponse.emailAddress, accountResponse.screenName, accountResponse.emailVerified);
             let userSession = new UserSession(userProfile);
             this._userSession = this.PutUserSession(userSession);
+            console.log("AuthenticateService: InitializeSession Returns 200");
           }
           else {
             this._userSession = this.ClearUserSession();
+            console.log("AuthenticateService: Clear Session");
           }
-
+  
           // Emit the session change
           this.UserSession.emit(this._userSession);
+
+          // Return 
+          return true;
         } );
     }
+
+    return true;
   }
 
   /** ============================================================ */
-  /** POST: Get Authenticate Token */
+  /** POST: Retrieve Account */
   retrieveAccount(accountRequest: AccountRetrieveRequest): Observable<AccountRetrieveResponse> {
-    return this.http.Post<AccountRetrieveResponse>(accountRequest, "account/retrieve");
+    return this.http.Post<AccountRetrieveResponse>(accountRequest, "authenticate/retrieve");
   }
 
   /** ============================================================ */
@@ -86,10 +105,11 @@ export class AuthenticateService {
   /** ============================================================ */
   /** Get user session */
   GetUserSession() : UserSession {
-    let accountId = localStorage.getItem('accountId') ?? undefined;
-    let emailAddress = sessionStorage.getItem('emailAddress') ?? undefined;
-    let screenName = sessionStorage.getItem('screenName') ?? undefined;
-    let emailVerified = sessionStorage.getItem('emailVerified') ?? undefined;
+    //let accountId = localStorage.getItem('accountId') ?? undefined;
+    let accountId = this.GetLocalStorageItem('accountId');
+    let emailAddress = this.GetSessionStorageItem('emailAddress');
+    let screenName = this.GetSessionStorageItem('screenName');
+    let emailVerified = this.GetSessionStorageItem('emailVerified');
     let userProfile = new UserProfile(accountId, emailAddress, screenName, (emailVerified == "true") ? true : false);
 
     return new UserSession(userProfile)
@@ -134,6 +154,12 @@ export class AuthenticateService {
   }
 
   /** ============================================================ */
+  /** Get a local storage item */
+  GetLocalStorageItem(itemName: string) {
+    return localStorage.getItem(itemName) ?? undefined;
+  }
+
+  /** ============================================================ */
   /** Set a session storage item */
   SetSessionStorageItem(itemName: string, itemValue: string | undefined) {
     if (itemValue) {
@@ -142,5 +168,11 @@ export class AuthenticateService {
     else {
       sessionStorage.removeItem(itemName);
     }
+  }
+
+  /** ============================================================ */
+  /** Get a session storage item */
+  GetSessionStorageItem(itemName: string) {
+    return sessionStorage.getItem(itemName) ?? undefined;
   }
 }

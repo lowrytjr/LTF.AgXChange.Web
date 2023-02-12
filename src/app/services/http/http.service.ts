@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, Observable, of, retry, tap } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { catchError, map, Observable, of, retry, tap, timer } from 'rxjs';
 import { ApiResponse } from '../../models/common/apiResponse.model';
 import { AppSettingsService } from '../appSettings/app-settings.service';
 
@@ -17,12 +17,12 @@ export class HttpService {
   }
 
   Post<T>(request: any, operation: string): Observable<T> {
-    return this.httpClient.post<T>(`${this._baseURL}/${operation}`, request, { headers: this.getHeaders()}).pipe(
+    return this.httpClient.post<T>(`${this._baseURL}/${operation}`, request).pipe(
       tap(data => {
         let response = <ApiResponse>data;
         
       }),
-      //retry(1),
+      retry({ count: 1, delay: this.shouldRetry }),
       catchError(
         this.handleError<T>(operation)
       )
@@ -30,7 +30,7 @@ export class HttpService {
   }
 
   Get<T>(operation: string, queryParameters: string): Observable<T> {
-    return this.httpClient.get<T>(`${this._baseURL}/${operation}?${queryParameters}`, { headers: this.getHeaders()}).pipe(
+    return this.httpClient.get<T>(`${this._baseURL}/${operation}?${queryParameters}`).pipe(
       catchError(
         this.handleError<T>(operation)
       )
@@ -38,7 +38,7 @@ export class HttpService {
   }
 
   GetJSON<T>(operation: string): Observable<T> {
-    return this.httpClient.get<T>(operation, { headers: this.getHeaders()}).pipe(
+    return this.httpClient.get<T>(operation).pipe(
       catchError(
         this.handleError<T>(operation)
       )
@@ -54,6 +54,16 @@ export class HttpService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${bearerToken}`
     });
+  }
+  
+  private shouldRetry(error: HttpErrorResponse) {
+    // Retry on 418 responses
+    if (error.status === 418) {
+      console.log("HttpService: Retry");
+      return timer(500); 
+    }
+
+    throw error;
   }
   
   /** ============================================================ */

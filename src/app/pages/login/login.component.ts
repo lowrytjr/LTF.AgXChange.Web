@@ -171,6 +171,8 @@ export class LoginComponent {
     }
   }
 
+  /** ============================================================ */
+  /** GetRegistrationState */
   GetRegistrationState(): RegistrationState {
     var registrationState;
 

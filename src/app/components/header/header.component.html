@@ -1,8 +1,8 @@
 <div class="topnav" id="mainMenu">
   <div class="home"><a routerLink="/" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Ax</a></div>
-  <div [ngClass]="{'dropdown': _userSession.isLoggedIn, 'dropdown-hidden': !_userSession.isLoggedIn}" (mouseleave)="CloseSubMenu('profileDropdown')">
+  <div [ngClass]="{'dropdown': _isLoggedIn, 'dropdown-hidden': !_isLoggedIn}" (mouseleave)="CloseSubMenu('profileDropdown')">
     <div class="dropIcon" style="float: left;">icon</div>
-    <button class="dropbtn" (click)="ToggleSubMenu('profileDropdown')">{{_userSession.userProfile.screenName}}
+    <button class="dropbtn" (click)="ToggleSubMenu('profileDropdown')">{{_screenName}}
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content" id="profileDropdown">
@@ -10,8 +10,8 @@
       <a href="#"><a routerLink="/logout" (click)="LogOut()" routerLinkActive="active" ariaCurrentWhenActive="page">Logout</a></a>
     </div>
   </div>
-  <div [ngClass]="{'item': _userSession.isLoggedIn, 'item-hidden': !_userSession.isLoggedIn}"><a routerLink="/search" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Search</a></div>
-  <div [ngClass]="{'item': !_userSession.isLoggedIn, 'item-hidden': _userSession.isLoggedIn}"><a routerLink="/login" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></div>
-  <div [ngClass]="{'item': !_userSession.isLoggedIn, 'item-hidden': _userSession.isLoggedIn}"><a routerLink="/create-account" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Sign Up</a></div>
+  <div [ngClass]="{'item': _isLoggedIn, 'item-hidden': !_isLoggedIn}"><a routerLink="/search" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Search</a></div>
+  <div [ngClass]="{'item': !_isLoggedIn, 'item-hidden': _isLoggedIn}"><a routerLink="/login" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></div>
+  <div [ngClass]="{'item': !_isLoggedIn, 'item-hidden': _isLoggedIn}"><a routerLink="/create-account" (click)="CloseMenu()" routerLinkActive="active" ariaCurrentWhenActive="page">Sign Up</a></div>
   <a href="javascript:void(0);" class="icon" (click)="ToggleMenu()">&#9776;</a>
 </div>

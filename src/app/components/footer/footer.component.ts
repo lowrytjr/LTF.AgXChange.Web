@@ -10,12 +10,14 @@ import { AuthenticateService } from 'src/app/services/authenticate/authenticate.
 export class FooterComponent {
   private _authenticateService: AuthenticateService;
   
+  _isLoggedIn: boolean = false;
+  _screenName: string = "";
   _userSession: UserSession;
   
   /** ============================================================ */
   /** Constructor */
   constructor(
-    private authenticateService: AuthenticateService
+    authenticateService: AuthenticateService
   ) {
       this._authenticateService = authenticateService;
 
@@ -25,6 +27,8 @@ export class FooterComponent {
       // Subscribe to future userSession events
       this._authenticateService.EmitUserSession().subscribe((userSession) => { 
         this._userSession = userSession;
+        this._isLoggedIn = userSession.isLoggedIn;
+        this._screenName = userSession.userProfile.screenName;
       });
   }
 }

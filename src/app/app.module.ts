@@ -9,7 +9,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './pages/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AccountService } from './services/account/account.service';
 import { AuthenticateService } from './services/authenticate/authenticate.service';
 import { HttpService } from './services/http/http.service';
@@ -36,6 +36,20 @@ const appRoutes: Routes = [
   { path: 'error', component: ErrorComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
+
+/** ============================================================ */
+/** initializeApplication */
+export function initializeApplication(http: HttpClient, authenticate: AuthenticateService) {
+  return function() {
+    console.log("Start initializeApplication");
+
+    return authenticate.initializeSession();
+  }
+}
+
+function sleep (time: number) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 
 @NgModule({
   declarations: [
@@ -65,7 +79,18 @@ const appRoutes: Routes = [
     ),
     BrowserAnimationsModule
   ],
-  providers: [AppSettingsService, HttpService, AccountService, AuthenticateService, AuthenticateGuard],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [HttpClient, AuthenticateService],
+      useFactory: initializeApplication
+    },
+    AppSettingsService,
+    HttpService,
+    AccountService,
+    AuthenticateService,
+    AuthenticateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

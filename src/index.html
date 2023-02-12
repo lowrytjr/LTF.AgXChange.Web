@@ -10,8 +10,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .initial-loading-overlay {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0px;
+      left:0px;
+      width: 100%;
+      height: 100vh;
+      background-color: #808080;
+      opacity: 0.7;
+      z-index: 2;
+    }
+    .initial-loading {
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+    .initial-loading img {
+      width: 64px;
+      height: 64px;
+    }
+  </style>
 </head>
 <body>
+  <div id="fullScreenLoader" class="initial-loading-overlay"><div class="initial-loading"><img src="/assets/loading.gif"></div></div>
   <app-root class="page_container"></app-root>
 </body>
 </html>

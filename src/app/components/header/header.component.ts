@@ -13,7 +13,9 @@ export class HeaderComponent {
   private _authenticateService: AuthenticateService;
   private _router: Router;
 
-  _userSession: UserSession;
+  _isLoggedIn: boolean = false;
+  _screenName: string = "";
+  _userSession: UserSession | undefined = undefined;
   
   /** ============================================================ */
   /** Constructor */
@@ -21,15 +23,15 @@ export class HeaderComponent {
     authenticateService: AuthenticateService,
     router: Router
   ) {
+      // Initialize the services
       this._router = router;
       this._authenticateService = authenticateService;
-
-      // Get current USer Session
-      this._userSession = this._authenticateService.GetUserSession();
-
-      // Subscribe to future userSession events
+    
+      // Subscribe to userSession events
       this._authenticateService.EmitUserSession().subscribe((userSession) => { 
         this._userSession = userSession;
+        this._isLoggedIn = userSession.isLoggedIn;
+        this._screenName = userSession.userProfile.screenName;
       });
   }
 
