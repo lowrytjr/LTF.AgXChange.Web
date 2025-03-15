@@ -175,4 +175,17 @@ export class AuthenticateService {
   GetSessionStorageItem(itemName: string) {
     return sessionStorage.getItem(itemName) ?? undefined;
   }
+
+  /** ============================================================ */
+  /** Show or hide the full screen loader */
+  showLoader(show: boolean = true): void {
+    const loader = document.getElementById('fullScreenLoader');
+
+    if (loader != null) {
+      loader.style.display = show ? "flex" : "none";
+      //setTimeout(() => {
+      //  loader.style.display = show ? "flex" : "none";
+      //}, 5000);
+    }
+  }
 }

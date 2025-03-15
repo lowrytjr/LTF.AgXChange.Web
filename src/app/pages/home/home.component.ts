@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { BasePageComponent } from 'src/app/components/base-page/base-page.component';
 import { UserSession } from 'src/app/models/account/userSession.model';
 import { AuthenticateService } from 'src/app/services/authenticate/authenticate.service';
 
@@ -9,40 +11,24 @@ import { AuthenticateService } from 'src/app/services/authenticate/authenticate.
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
-  private _authenticateService: AuthenticateService;
-  
-  _isLoggedIn: boolean = false;
-  _screenName: string = "";
-  _userSession: UserSession | undefined = undefined;
+export class HomeComponent extends BasePageComponent implements OnInit {
   
   /** ============================================================ */
   /** Constructor */
-  constructor(authenticateService: AuthenticateService) {
-    // Initialize the services  
-    this._authenticateService = authenticateService;
+  constructor(router: Router, authenticateService: AuthenticateService) {
+    console.log("HomePage: constructor");
+    super(router, authenticateService);
+  }
 
-    // Subscribe to future userSession events
-    this._authenticateService.EmitUserSession().subscribe((userSession) => { 
-      this._userSession = userSession;
-      this._isLoggedIn = userSession.isLoggedIn;
-      this._screenName = userSession.userProfile.screenName;
-      console.log("Home Emit User Session");
-    });
+  override ngOnInit(): void {
+    console.log("HomePage: ngOnInit");
+    super.ngOnInit();
   }
 
   /** ============================================================ */
   /** ngAfterViewInit */
   ngAfterViewInit() {
     // Load data
-    console.log("Start Home ngAfterViewInit");
-
-    // Hide full screen loader
-    setTimeout(() => {
-      var loader = document.getElementById('fullScreenLoader');
-      if (loader != null) {
-        loader.style.display = 'none';
-      }
-    }, 5000)
+    console.log("HomePage: ngAfterViewInit");
   }
 }

@@ -23,6 +23,7 @@ import { AuthenticateGuard } from './services/authenticate/authenticate.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { BasePageComponent } from './components/base-page/base-page.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -47,10 +48,6 @@ export function initializeApplication(http: HttpClient, authenticate: Authentica
   }
 }
 
-function sleep (time: number) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,7 +63,8 @@ function sleep (time: number) {
     LoaderComponent,
     ProfileComponent,
     LogoutComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    BasePageComponent
   ],
   imports: [
     BrowserModule,

@@ -17,7 +17,7 @@ export class HttpService {
   }
 
   Post<T>(request: any, operation: string): Observable<T> {
-    return this.httpClient.post<T>(`${this._baseURL}/${operation}`, request).pipe(
+    return this.httpClient.post<T>(`${this._baseURL}/${operation}`, request, { withCredentials: true }).pipe(
       tap(data => {
         let response = <ApiResponse>data;
         
